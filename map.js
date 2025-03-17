@@ -96,13 +96,22 @@ fetch('./data/data.json')
 
 
 
+function checkRichmondCountyVA(element) {
+    if ((element['properties']['STATEFP']=='51')&(element['properties']['NAME']=='Richmond')&(element['properties']['LSAD']=='06')) {
+        return true;
+    }
+    return false;
+}
+
 function getFeatures(updated_counties, counties_list) {
     all_counties['features'].forEach(element => {
         counties_list.forEach(county => {
             if (element['properties']['NAME'] == county['county']) {
     
                 if (element['properties']['STATEFP'] == state_to_statefp[county['state']]) {
-                    updated_counties.features.push(element);
+                    if (!checkRichmondCountyVA(element)) {
+                        updated_counties.features.push(element);
+                    }    
                 }
             }
         })
